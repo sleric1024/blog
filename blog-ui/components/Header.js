@@ -6,7 +6,7 @@ function Header() {
   return (
     <div className="header">
         <Row type="flex" justify="center">
-            <Col xs={24} sm={24} md={10} lg={10} xl={10}>
+            <Col xs={24} sm={24} md={10} lg={15} xl={12}>
                 <span className="header-logo">Eric Lu</span>
                 <span className="header-txt">React Learning</span>
             </Col>

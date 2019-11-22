@@ -1,18 +1,13 @@
-import React from 'react';
-import Head from 'next/head';
-import Header from '../components/Header';
-import {Row, Col , List ,Icon} from 'antd'
-import '../static/style/pages/index.css';
-
-
-const Home = () => (
-  <div>
+import React from 'react'
+import Head from 'next/head'
+import {Row, Col} from 'antd'
+import Header from '../components/Header'
+const Detailed = () => (
+  <>
     <Head>
-      <title>Home</title>
+      <title>Detailed</title>
     </Head>
-
-    <Header></Header>
-
+    <Header />
     <Row className="comm-main" type="flex" justify="center">
       <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}  >
         左侧
@@ -23,7 +18,7 @@ const Home = () => (
       </Col>
     </Row>
 
-  </div>
+ </>
 )
 
-export default Home;
+export default Detailed
