@@ -1,6 +1,6 @@
 import React from 'react';
 import '../static/style/components/header.css';
-import {Row,Col, Menu, Icon} from 'antd'
+import {Row,Col, Menu, Icon} from 'antd';
 
 function Header() {
   return (
