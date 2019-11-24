@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import {Row, Col , List ,Icon} from 'antd'
 import '../static/style/pages/index.css';
 import Author from '../components/Author';
+import Footer from '../components/Footer'
 import AD from '../components/AD';
 
 const Home = () => {
@@ -78,10 +79,12 @@ const Home = () => {
         </Col>
 
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
-          <Author></Author>
+          <Author />
+          <AD />
         </Col>
       </Row>
 
+      <Footer/>
     </div>
   );
 }
