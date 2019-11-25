@@ -5,7 +5,7 @@ import {Row, Col , List ,Icon} from 'antd'
 import '../static/style/pages/index.css';
 import Author from '../components/Author';
 import Footer from '../components/Footer'
-import AD from '../components/AD';
+import Advertisement from '../components/Advertisement';
 
 const Home = () => {
 
@@ -80,7 +80,7 @@ const Home = () => {
 
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
           <Author />
-          <AD />
+          <Advertisement />
         </Col>
       </Row>
 
