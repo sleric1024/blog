@@ -5,7 +5,7 @@ const Author = () => {
 
   return (
     <div className="author-div comm-box">
-      <div> <Avatar size={100} src="https://avatars0.githubusercontent.com/u/5724592?s=460&v=4"  /></div>
+      <div> <Avatar size={100} src="../static/images/avatar.png"  /></div>
       <div className="author-introduction">
         前端菜鸟
         <Divider>社交账号</Divider>
