@@ -15,8 +15,8 @@ class HomeController extends Controller {
             'article.introduce as introduce,' +
             'article.addTime as addTime,' +
             'article.view_count as view_count ,' +
-            '.type.typeName as typeName ' +
-            'FROM article LEFT JOIN type ON article.type_id = type.Id'
+            'type.typeName as typeName ' +
+            'FROM article LEFT JOIN type ON article.type_id = type.id';
 
     const results = await this.app.mysql.query(sql);
 
