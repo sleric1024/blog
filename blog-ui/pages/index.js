@@ -7,6 +7,7 @@ import Author from '../components/Author';
 import Footer from '../components/Footer'
 import Advertisement from '../components/Advertisement';
 import axios from 'axios';
+import Link from 'next/link'
 
 const Home = (list) => {
 
@@ -29,7 +30,11 @@ const Home = (list) => {
               dataSource={mylist}
               renderItem={item => (
                 <List.Item>
-                  <div className="list-title">{item.title}</div>
+                  <div className="list-title">
+                    <Link href={{pathname:'/detailed',query:{id:item.id}}}>
+                      <a>{item.title}</a>
+                    </Link>
+                  </div>
                   <div className="list-icon">
                     <span><Icon type="calendar" />{item.addTime} </span>
                     <span><Icon type="folder" />{item.typeName}</span>
