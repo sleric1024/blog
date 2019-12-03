@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Row, Col, Icon, Breadcrumb, Affix} from 'antd';
 import Head from 'next/head';
 import Header from '../components/Header';
@@ -11,12 +11,13 @@ import MarkdownNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 import axios from 'axios';
 
-const Detailed = (markdown) => {
+const Detailed = (data) => {
+  const [detailData, setDetailData] = useState(data);
 
   return (
     <div>
       <Head>
-        <title>博客详细页</title>
+        <title>{detailData.title}</title>
       </Head>
 
       <Header />
@@ -27,24 +28,24 @@ const Detailed = (markdown) => {
               <div className="bread-div">
                 <Breadcrumb>
                   <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                  <Breadcrumb.Item>视频列表</Breadcrumb.Item>
-                  <Breadcrumb.Item>xxxx</Breadcrumb.Item>
+                  <Breadcrumb.Item>{detailData.typeName}</Breadcrumb.Item>
+                  <Breadcrumb.Item>{detailData.title}</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
 
              <div>
                 <div className="detailed-title">
-                Title of react learning
+                {detailData.title}
                 </div>
 
                 <div className="list-icon center">
-                  <span><Icon type="calendar" /> 2019-06-28</span>
-                  <span><Icon type="folder" /> 视频教程</span>
-                  <span><Icon type="fire" /> 5498人</span>
+                  <span><Icon type="calendar" /> {detailData.addTime}</span>
+                  <span><Icon type="folder" /> {detailData.typeName}</span>
+                  <span><Icon type="fire" /> {detailData.view_count}人</span>
                 </div>
 
                 <div className="detailed-content" >
-                  <ReactMarkdown source={markdown} escapeHtml={false}
+                  <ReactMarkdown source={detailData.article_content} escapeHtml={false}
                   />
                 </div>
 
@@ -63,7 +64,7 @@ const Detailed = (markdown) => {
               <div className="nav-title">文章目录</div>
               <MarkdownNav
                 className="article-menu"
-                source={markdown}
+                source={detailData.article_content}
                 headingTopOffset={0}
                 ordered={false} />
             </div>
@@ -76,19 +77,19 @@ const Detailed = (markdown) => {
   );
 }
 
-Detailed.getInitialProps = async(context)=>{
+Detailed.getInitialProps = async(context) => {
 
   console.log(context.query.id)
-  let id =context.query.id
-  const promise = new Promise((resolve)=>{
+  let id = context.query.id;
+  const promise = new Promise((resolve) => {
 
-    axios('http://127.0.0.1:7001/default/getArticleById/'+id).then(
-      (res)=>{
-        console.log(title)
-        resolve(res.data.data[0])
+    axios('http://127.0.0.1:7001/default/getArticleById/' + id).then(
+      (res) => {
+        console.log(res.data.data[0]);
+        resolve(res.data.data[0]);
       }
-    )
-  })
+    );
+  });
 
   return await promise
 }
