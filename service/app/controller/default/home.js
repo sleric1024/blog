@@ -6,7 +6,6 @@ const Controller = require('egg').Controller;
 class HomeController extends Controller {
   async index() {
     const result = await this.app.mysql.get('react_blog', {});
-    console.log(result);
     this.ctx.body = result;
   }
 
@@ -47,6 +46,11 @@ class HomeController extends Controller {
     this.ctx.body = {
       data: result,
     };
+  }
+
+  async getTypeInfo() {
+    const result = await this.app.mysql.select('type');
+    this.ctx.body = { data: result };
   }
 
 }

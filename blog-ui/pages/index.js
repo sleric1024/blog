@@ -8,6 +8,7 @@ import Footer from '../components/Footer'
 import Advertisement from '../components/Advertisement';
 import axios from 'axios';
 import Link from 'next/link'
+import servicePath from '../config/apiUrl';
 
 const Home = (list) => {
 
@@ -59,7 +60,7 @@ const Home = (list) => {
 
 Home.getInitialProps = async() => {
   const promise = new Promise((resolve) => {
-    axios('http://127.0.0.1:7001/default/getArticleList').then(
+    axios(servicePath.getArticleList).then(
       (res) => {
         resolve(res.data)
       }
