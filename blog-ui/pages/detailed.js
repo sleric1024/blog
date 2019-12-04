@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {Row, Col, Icon, Breadcrumb, Affix} from 'antd';
 import Head from 'next/head';
 import Header from '../components/Header';
@@ -6,18 +6,43 @@ import Advertisement from '../components/Advertisement';
 import Author from '../components/Author';
 import Footer from '../components/Footer';
 import '../static/style/components/detailed.css';
-import ReactMarkdown from 'react-markdown';
-import MarkdownNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 import axios from 'axios';
+import marked from 'marked';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/monokai-sublime.css';
+import Tocify from '../components/tocify.tsx';
 
-const Detailed = (data) => {
-  const [detailData, setDetailData] = useState(data);
+
+const Detailed = (props) => {
+
+  const renderer = new marked.Renderer();
+  const tocify = new Tocify()
+  renderer.heading = function(text, level, raw) {
+    const anchor = tocify.add(text, level);
+    return `<a id="${anchor}" href="#${anchor}" class="anchor-fix"><h${level}>${text}</h${level}></a>\n`;
+  };
+
+  marked.setOptions({
+    renderer: renderer,
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: false,
+    smartLists: true,
+    smartypants: false,
+    highlight: function (code) {
+      return highlight.highlightAuto(code).value;
+    }
+  });
+
+  let html = marked(props.article_content);
 
   return (
     <div>
       <Head>
-        <title>{detailData.title}</title>
+        <title>{props.title}</title>
       </Head>
 
       <Header />
@@ -28,25 +53,23 @@ const Detailed = (data) => {
               <div className="bread-div">
                 <Breadcrumb>
                   <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                  <Breadcrumb.Item>{detailData.typeName}</Breadcrumb.Item>
-                  <Breadcrumb.Item>{detailData.title}</Breadcrumb.Item>
+                  <Breadcrumb.Item>{props.typeName}</Breadcrumb.Item>
+                  <Breadcrumb.Item>{props.title}</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
 
              <div>
                 <div className="detailed-title">
-                {detailData.title}
+                {props.title}
                 </div>
 
                 <div className="list-icon center">
-                  <span><Icon type="calendar" /> {detailData.addTime}</span>
-                  <span><Icon type="folder" /> {detailData.typeName}</span>
-                  <span><Icon type="fire" /> {detailData.view_count}人</span>
+                  <span><Icon type="calendar" /> {props.addTime}</span>
+                  <span><Icon type="folder" /> {props.typeName}</span>
+                  <span><Icon type="fire" /> {props.view_count}人</span>
                 </div>
 
-                <div className="detailed-content" >
-                  <ReactMarkdown source={detailData.article_content} escapeHtml={false}
-                  />
+                <div className="detailed-content" dangerouslySetInnerHTML={{__html: html}}>
                 </div>
 
              </div>
@@ -62,11 +85,9 @@ const Detailed = (data) => {
           <Affix offsetTop={5}>
             <div className="comm-box detailed-nav">
               <div className="nav-title">文章目录</div>
-              <MarkdownNav
-                className="article-menu"
-                source={detailData.article_content}
-                headingTopOffset={0}
-                ordered={false} />
+              {
+                tocify && tocify.render()
+              }
             </div>
           </Affix>
         </Col>
