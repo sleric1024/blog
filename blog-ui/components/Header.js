@@ -25,7 +25,6 @@ function Header() {
 	}, [])
 
 	const handleClick = (e) => {
-		debugger;
 		if (e.key === '0') {
 			Router.push('/index');
 		} else {

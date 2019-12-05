@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import {Row, Col , List ,Icon, Breadcrumb} from 'antd'
@@ -6,49 +6,19 @@ import '../static/style/pages/index.css';
 import Author from '../components/Author';
 import Footer from '../components/Footer'
 import Advertisement from '../components/Advertisement';
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
+import Link from 'next/link';
 
-const ListPage = () => {
+const ListPage = (props) => {
 
-  const [ mylist , setMylist ] = useState(
-    [
-      {title:'5财富自由后，他仍是中国最勤奋推销员，每天工作到凌晨',context:`钢琴共有88个键，琴键有限，却能演奏无限乐章。”
+  const [ articleList , setArticleList ] = useState(props.data);
+  const [ typeName, setTypeName ] = useState(props.name.name);
 
-      1900是弗吉尼亚号豪华游轮上最杰出的钢琴师，不论是头等舱的贵族，还是经济舱的平民，都是他的追捧者。在船上，他是最耀眼的明星。前来挑战的“爵士乐之父”也不是他的对手。
-
-      但1900始终不愿下船。直到一个名叫帕多万的姑娘出现，才让他产生了上岸追求新生活的向往。
-
-      可当他终于鼓起勇气走下船梯时，遥望着岸上数不清的街道，就像“永远也数不完”的琴键，他又心生对于未知的畏惧，还是退回到了自己最熟悉的船上，并最终与船一起沉没。
-
-      `},
-      {title:'经观头条｜独家探访鞋王百丽：一场“黑天鹅革命”正在',context:`钢琴共有88个键，琴键有限，却能演奏无限乐章。”
-
-      1900是弗吉尼亚号豪华游轮上最杰出的钢琴师，不论是头等舱的贵族，还是经济舱的平民，都是他的追捧者。在船上，他是最耀眼的明星。前来挑战的“爵士乐之父”也不是他的对手。
-
-      但1900始终不愿下船。直到一个名叫帕多万的姑娘出现，才让他产生了上岸追求新生活的向往。
-
-      可当他终于鼓起勇气走下船梯时，遥望着岸上数不清的街道，就像“永远也数不完”的琴键，他又心生对于未知的畏惧，还是退回到了自己最熟悉的船上，并最终与船一起沉没。
-
-      `},
-      {title:'古巴能上网了，美国巨头抢先入场，中国互联网该向硅谷',context:`钢琴共有88个键，琴键有限，却能演奏无限乐章。”
-
-      1900是弗吉尼亚号豪华游轮上最杰出的钢琴师，不论是头等舱的贵族，还是经济舱的平民，都是他的追捧者。在船上，他是最耀眼的明星。前来挑战的“爵士乐之父”也不是他的对手。
-
-      但1900始终不愿下船。直到一个名叫帕多万的姑娘出现，才让他产生了上岸追求新生活的向往。
-
-      可当他终于鼓起勇气走下船梯时，遥望着岸上数不清的街道，就像“永远也数不完”的琴键，他又心生对于未知的畏惧，还是退回到了自己最熟悉的船上，并最终与船一起沉没。
-
-      `},
-      {title:'分家能带来高额回报，但腾讯为何不分拆金融科技？',context:`钢琴共有88个键，琴键有限，却能演奏无限乐章。”
-
-      1900是弗吉尼亚号豪华游轮上最杰出的钢琴师，不论是头等舱的贵族，还是经济舱的平民，都是他的追捧者。在船上，他是最耀眼的明星。前来挑战的“爵士乐之父”也不是他的对手。
-
-      但1900始终不愿下船。直到一个名叫帕多万的姑娘出现，才让他产生了上岸追求新生活的向往。
-
-      可当他终于鼓起勇气走下船梯时，遥望着岸上数不清的街道，就像“永远也数不完”的琴键，他又心生对于未知的畏惧，还是退回到了自己最熟悉的船上，并最终与船一起沉没。
-
-      `}
-    ]
-  );
+  useEffect(()=>{
+    setArticleList(props.data);
+    setTypeName(typeName);
+  });
 
   return (
     <div>
@@ -63,23 +33,26 @@ const ListPage = () => {
           <div className="bread-div">
               <Breadcrumb>
                 <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                <Breadcrumb.Item>视频列表</Breadcrumb.Item>
+                <Breadcrumb.Item>{typeName}</Breadcrumb.Item>
               </Breadcrumb>
           </div>
 
           <List
-              header={<div>最新日志</div>}
               itemLayout="vertical"
-              dataSource={mylist}
+              dataSource={articleList}
               renderItem={item => (
                 <List.Item>
-                  <div className="list-title">{item.title}</div>
-                  <div className="list-icon">
-                    <span><Icon type="calendar" /> 2019-06-28</span>
-                    <span><Icon type="folder" /> 视频教程</span>
-                    <span><Icon type="fire" /> 5498人</span>
+                  <div className="list-title">
+                      <Link href={{pathname:'/detailed',query:{id:item.id}}}>
+                      <a>{item.title}</a>
+                    </Link>
                   </div>
-                  <div className="list-context">{item.context}</div>
+                  <div className="list-icon">
+                    <span><Icon type="calendar" />{item.addTime}</span>
+                    <span><Icon type="folder" /> {item.typeName}</span>
+                    <span><Icon type="fire" />  {item.view_count}人</span>
+                  </div>
+                  <div className="list-context">{item.introduce}</div>
                 </List.Item>
               )}
             />
@@ -94,6 +67,17 @@ const ListPage = () => {
       <Footer/>
     </div>
   );
-}
+};
+
+ListPage.getInitialProps = async (context)=>{
+
+  let id =context.query.id;
+  const promise = new Promise((resolve)=>{
+    axios(servicePath.getListById+id).then(
+      (res) => resolve(res.data)
+    )
+  })
+  return await promise;
+};
 
 export default ListPage;

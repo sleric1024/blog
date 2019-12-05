@@ -53,7 +53,7 @@ const Detailed = (props) => {
               <div className="bread-div">
                 <Breadcrumb>
                   <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                  <Breadcrumb.Item>{props.typeName}</Breadcrumb.Item>
+                  <Breadcrumb.Item><a href={'/list?id=' + props.typeId}>{props.typeName}</a></Breadcrumb.Item>
                   <Breadcrumb.Item>{props.title}</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
@@ -100,13 +100,11 @@ const Detailed = (props) => {
 
 Detailed.getInitialProps = async(context) => {
 
-  console.log(context.query.id)
   let id = context.query.id;
   const promise = new Promise((resolve) => {
 
     axios(servicePath.getArticleById + id).then(
       (res) => {
-        console.log(res.data.data[0]);
         resolve(res.data.data[0]);
       }
     );
