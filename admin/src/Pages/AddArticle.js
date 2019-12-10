@@ -2,6 +2,8 @@ import React,{useState} from 'react';
 import marked from 'marked'
 import '../static/css/AddArticle.css'
 import { Row, Col ,Input, Select ,Button ,DatePicker } from 'antd'
+import highlight from 'highlight.js';
+import 'highlight.js/styles/monokai-sublime.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -19,8 +21,10 @@ function AddArticle() {
   const [typeInfo ,setTypeInfo] = useState([]); // 文章类别信息
   const [selectedType,setSelectType] = useState(1); //选择的文章类别
 
-  marked.setOptions({
-    renderer: marked.Renderer(),
+  const renderer = new marked.Renderer();
+
+marked.setOptions({
+    renderer: renderer,
     gfm: true,
     pedantic: false,
     sanitize: false,
@@ -28,6 +32,9 @@ function AddArticle() {
     breaks: false,
     smartLists: true,
     smartypants: false,
+    highlight: function (code) {
+      return highlight.highlightAuto(code).value;
+    }
   });
 
   const changeContent = (e)=>{
@@ -73,7 +80,7 @@ function AddArticle() {
             <Col span={12}>
               <div
                   className="show-html"
-                  dangerouslySetInnerHTML={{__html:markdownContent}}>
+                  dangerouslySetInnerHTML={{__html: markdownContent}}>
               </div>
             </Col>
           </Row>
