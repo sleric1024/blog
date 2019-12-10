@@ -20,7 +20,6 @@ function Login(props) {
 
     const checkLogin = () => {
         setIsLoading(true);
-        debugger;
 
         if (!userName) {
             message.error('用户名不能为空');
