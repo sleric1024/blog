@@ -1,14 +1,16 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import marked from 'marked'
 import '../static/css/AddArticle.css'
 import { Row, Col ,Input, Select ,Button ,DatePicker } from 'antd'
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
 import highlight from 'highlight.js';
 import 'highlight.js/styles/monokai-sublime.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
-function AddArticle() {
+function AddArticle(props) {
 
   const [articleId,setArticleId] = useState(0);  // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
   const [articleTitle,setArticleTitle] = useState('');   //文章标题
@@ -23,7 +25,11 @@ function AddArticle() {
 
   const renderer = new marked.Renderer();
 
-marked.setOptions({
+  useEffect(() => {
+    getTypeInfo();
+  }, []);
+
+  marked.setOptions({
     renderer: renderer,
     gfm: true,
     pedantic: false,
@@ -49,6 +55,23 @@ marked.setOptions({
     setIntroducehtml(html);
   };
 
+  const getTypeInfo = () => {
+    axios({
+      method: 'get',
+      url: servicePath.getTypeInfo,
+      withCredentials: true
+    }).then(
+      res => {
+        if (res.data.data === '没有登录') {
+          localStorage.removeItem('openId');
+          props.history.push('/login');
+        } else {
+          setTypeInfo(res.data.data);
+        }
+      }
+    )
+  }
+
   return (
     <div>
       <Row gutter={5}>
@@ -59,8 +82,12 @@ marked.setOptions({
             </Col>
             <Col span={4}>
               &nbsp;
-              <Select defaultValue="Sign Up" size="large">
-                <Option value="Sign Up">视频教程</Option>
+              <Select defaultValue={selectedType} size="large">
+                {
+                  typeInfo.map((item, index) => {
+                    return (<Option key={index} value={item.id}>{item.typeName}</Option>);
+                  })
+                }
               </Select>
             </Col>
           </Row>
