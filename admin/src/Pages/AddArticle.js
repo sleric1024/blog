@@ -94,7 +94,36 @@ function AddArticle(props) {
       return false;
     }
 
-    message.success('检验通过!');
+    let dateText = showDate.replace(/-/g, '/');
+
+    let dataProps = {
+      type_id: selectedType,
+      title: articleTitle,
+      article_content: articleContent,
+      introduce: introducemd,
+      addTime: new Date(dateText).getTime() / 1000
+    };
+
+    if (articleId ===  0) {
+      console.log('articleId=:' + articleId)
+      dataProps.view_count = 123;
+      axios({
+        method: 'post',
+        url: servicePath.addArticle,
+        data: dataProps,
+        withCredentials: true
+      }).then(
+        res => {
+          setArticleId(res.data.insertId);
+          debugger;
+          if (res.data.isSuccess) {
+             message.success('文章保存成功!');
+          } else {
+            message.error('文章保存失败!');
+          }
+        }
+      )
+    }
   }
 
   return (

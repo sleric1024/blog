@@ -32,7 +32,20 @@ class MainController extends Controller {
     this.ctx.body = {
       data: resType,
     };
+  }
 
+  async addArticle() {
+    const tmpArticle = this.ctx.request.body;
+    console.log(tmpArticle);
+    // tmpArticle.
+    const result = await this.app.mysql.insert('article', tmpArticle);
+    const isSuccess = result.affectedRows === 1;
+    const insertId = result.insertId;
+
+    this.ctx.body = {
+      isSuccess,
+      insertId,
+    }
   }
 }
 
