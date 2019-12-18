@@ -35,10 +35,10 @@ class MainController extends Controller {
   }
 
   async addArticle() {
-    const tmpArticle = this.ctx.request.body;
-    console.log(tmpArticle);
-    // tmpArticle.
-    const result = await this.app.mysql.insert('article', tmpArticle);
+    const tempArticle = this.ctx.request.body;
+    console.log(tempArticle);
+    // tempArticle.
+    const result = await this.app.mysql.insert('article', tempArticle);
     const isSuccess = result.affectedRows === 1;
     const insertId = result.insertId;
 
@@ -46,6 +46,17 @@ class MainController extends Controller {
       isSuccess,
       insertId,
     }
+  }
+
+  async updateArticle() {
+    const tempArticle = this.ctx.request.body;
+
+    const result = await this.app.mysql.update('article', tempArticle);
+    const updateSuccess = result.affectedRows === 1;
+
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
   }
 }
 

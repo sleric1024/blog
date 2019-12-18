@@ -117,9 +117,25 @@ function AddArticle(props) {
           setArticleId(res.data.insertId);
           debugger;
           if (res.data.isSuccess) {
-             message.success('文章保存成功!');
+             message.success('文章发布成功!');
           } else {
-            message.error('文章保存失败!');
+            message.error('文章发布失败!');
+          }
+        }
+      )
+    } else {
+      dataProps.id = articleId;
+      axios({
+        method: 'post',
+        url: servicePath.updateArticle,
+        data: dataProps,
+        withCredentials: true
+      }).then(
+        res => {
+          if (res.data.isSuccess) {
+            message.success('文章修改成功!');
+          } else {
+            message.error('文章修改失败!');
           }
         }
       )
