@@ -6,9 +6,9 @@ import AdminIndex from './AdminIndex';
 function Main() {
   return (
     <Router>
-      <Route path="/login" exact component={Login} />
-      <Route path="/index" exact component={AdminIndex} />
+      <Route path="/login" component={Login} />
       <Route path="/" exact component={AdminIndex} />
+      <Route path="/index" component={AdminIndex} />
     </Router>
   )
 }
