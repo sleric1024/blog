@@ -12,7 +12,6 @@ import servicePath from '../config/apiUrl';
 
 const Home = (list) => {
 
-  console.log(list);
   const [ mylist , setMylist ] = useState( list.data);
 
   return (
