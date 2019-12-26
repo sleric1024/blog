@@ -2,10 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {List, Row, Col, Modal, message, Button} from 'antd';
 import axios from 'axios';
 import servicePath from '../config/apiUrl';
+import '../static/css/ArticleList.css';
 const {confirm} = Modal;
+
 
 function ArticleList(props) {
   const [list, setList] = useState([]);
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const getList = ()=> {
+    axios({
+      method:'get',
+      url: servicePath.getArticleList,
+      withCredentials: true,
+      header: { 'Access-Control-Allow-Origin':'*' }
+    }).then(
+    res => {
+      if (res.data && res.data.data === '没有登录') {
+        localStorage.removeItem('openId');
+        props.history.push('/login');
+      } else {
+        setList(res.data.list);
+      }
+    });
+  }
 
   return (
     <div>
@@ -20,9 +43,6 @@ function ArticleList(props) {
             </Col>
             <Col span={3}>
                 <b>发布时间</b>
-            </Col>
-            <Col span={3}>
-                <b>集数</b>
             </Col>
             <Col span={3}>
                 <b>浏览量</b>
@@ -46,9 +66,6 @@ function ArticleList(props) {
                   </Col>
                   <Col span={3}>
                       {item.addTime}
-                  </Col>
-                  <Col span={3}>
-                      共<span>{item.part_count}</span>集
                   </Col>
                   <Col span={3}>
                     {item.view_count}

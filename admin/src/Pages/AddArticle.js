@@ -115,7 +115,6 @@ function AddArticle(props) {
       }).then(
         res => {
           setArticleId(res.data.insertId);
-          debugger;
           if (res.data.isSuccess) {
              message.success('文章发布成功!');
           } else {

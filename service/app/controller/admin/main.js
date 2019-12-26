@@ -58,6 +58,23 @@ class MainController extends Controller {
       isSuccess: updateSuccess,
     };
   }
+
+  async getArticleList() {
+    const sql = 'SELECT article.id as id,' +
+    'article.title as title,' +
+    'article.introduce as introduce,' +
+    'article.view_count as view_count,' +
+    "FROM_UNIXTIME(article.addTime,'%Y-%m-%d' ) as addTime," +
+    'type.typeName as typeName ' +
+    'FROM article LEFT JOIN type ON article.type_id = type.Id ' +
+    'ORDER BY article.id DESC '
+
+    const resList = await this.app.mysql.query(sql);
+
+    this.ctx.body = {
+      list: resList,
+    };
+  }
 }
 
 module.exports = MainController;

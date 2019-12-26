@@ -68,10 +68,11 @@ function AdminIndex(props) {
           </Breadcrumb>
           <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
             <div>
-              <AddArticle></AddArticle>
-              <Route path="/index/add" component={AddArticle} />
+            <Route path="/" exact component={AddArticle} />
+              <Route path="/index" exact component={AddArticle} />
+              <Route path="/index/add" exact component={AddArticle} />
               {/* <Route path="/index/add/:id" exact component={AddArticle} /> */}
-              <Route path="/index/list" component={ArticleList} />
+              <Route path="/index/list" exact component={ArticleList} />
             </div>
           </div>
         </Content>
